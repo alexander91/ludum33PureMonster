@@ -1,0 +1,35 @@
+# =============== #
+# Unity generated #
+# =============== #
+PureMonster/Temp/
+PureMonster/Library/
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+PureMonster/ExportedObj/
+PureMonster/obj/
+*.svd
+*.userprefs
+PureMonster/*.csproj
+*.pidb
+*.suo
+PureMonster/*.sln
+*.user
+*.unityproj
+*.booproj
+
+# ============ #
+# OS generated #
+# ============ #
+PureMonster/.DS_Store
+PureMonster/.DS_Store?
+PureMonster/._*
+PureMonster/.Spotlight-V100
+PureMonster/.Trashes
+PureMonster/ehthumbs.db
+PureMonster/Thumbs.db
+
+# Ours
+PureMonster/Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity*
+PureMonster/Assets/UnityVS/Editor/UnityVS.VersionSpecific*

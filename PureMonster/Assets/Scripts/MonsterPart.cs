@@ -18,6 +18,13 @@ public partial class MonsterPart : MonoBehaviour
         {
             DestroySelf();
         }
+
+        if (other.gameObject.transform.tag == "Bullet")
+        {
+            Bullet bullet = other.gameObject.GetComponent<Bullet>();
+            bullet.DestroySelf();
+            DestroySelf();
+        }
     }
 
     const float length = 0.8f;

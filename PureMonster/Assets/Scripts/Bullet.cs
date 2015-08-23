@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
     }
     float distanceForStep;
     float distance;
-    const float distanceMax = 2.0f;
+    public const float distanceMax = 20.0f;
 
 
     // Use this for initialization
@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
     }
 
 
-    void DestroySelf()
+    public void DestroySelf()
     {
         alive = false;
         Destroy(gameObject);

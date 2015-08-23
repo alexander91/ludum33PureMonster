@@ -6,29 +6,36 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     bool active = true;
 
-    Renderer renderer;
+    new Renderer renderer;
 
     class WandererControl
     {
         public WandererControl()
         {
-
+            SetNewTarget();
         }
 
-        public float speed = 0.03f;
+        public float speed = 0.01f;
         public const float maxGoingTime = 3f;
 
         Vector3 nextPosition;
+        Vector3 lastPos;
         float startGoingTime;
 
         public void GoToPosition(Transform transform)
         {
-            transform.position += speed * (nextPosition - transform.position).normalized;
+            lastPos = transform.position;
+            transform.position += speed * (nextPosition - lastPos).normalized;
         }
 
         public void Iterate()
         {
-            //if ()
+            var playerCenter = Game.Instance.Manager.CenterOfMonster;
+            if ((playerCenter - lastPos).sqrMagnitude < 225f)
+            {
+                startGoingTime = Time.time;
+                nextPosition = lastPos + (lastPos - playerCenter);
+            }
             if ((Time.time - startGoingTime) > maxGoingTime)
             {
                 SetNewTarget();
@@ -39,12 +46,11 @@ public class Enemy : MonoBehaviour {
         void SetNewTarget()
         {
             nextPosition = RandomUtils.getRandomVector(185f);
-            Debug.Log(nextPosition);
             nextPosition.z = 0f;
         }
     }
 
-    WandererControl myWalker = new WandererControl();
+    WandererControl myWalker;
 
     bool killed = false;
 
@@ -75,13 +81,15 @@ public class Enemy : MonoBehaviour {
     }
     
 	// Use this for initialization
-	void Start () {
+	protected virtual void Start () {
+        myWalker = new WandererControl();
+
         renderer = GetComponent<Renderer>();
         Health = maxHealth;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected virtual void Update () {
         if (!active) return;
 
         myWalker.GoToPosition(transform);
@@ -93,5 +101,13 @@ public class Enemy : MonoBehaviour {
     {
         killed = true;
         DestroyObject(gameObject);
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.transform.tag == "Wall")
+        {
+            DestroySelf();
+        }
     }
 }

@@ -5,8 +5,6 @@ partial class MonsterPart
 {
     class CopyingStrategy
     {
-        int counter;
-
         MonsterPart monsterPart;
         public CopyingStrategy(MonsterPart part)
         {
@@ -22,7 +20,7 @@ partial class MonsterPart
             if (monsterPart.neighbors.Count < MaxNeighborsForCreation)
             {
                 var newObj = (GameObject)Instantiate(monsterPart.myCopy);
-                newObj.transform.position = monsterPart.pos + RandomUtils.getRandomVector(1.0f);
+                newObj.transform.position = monsterPart.pos + RandomUtils.getRandomVector(0.5f);
                 MonsterPart newPart = newObj.GetComponent<MonsterPart>();
                 if (newPart == null)
                 {
@@ -40,15 +38,11 @@ partial class MonsterPart
             }
         }
 
-        public void IterateForCreation()
+        public void IterateForCreation(int count)
         {
-            counter++;
-
-            if (counter > 0)
+            for (int i = 0; i < count; ++i)
             {
                 CreateNewPart();
-                CreateNewPart();
-                counter = 0;
             }
         }
     }

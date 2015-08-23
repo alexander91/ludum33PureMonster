@@ -12,7 +12,7 @@ public partial class MonsterPart : MonoBehaviour
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
             if (enemy.Killed) return;
             enemy.Health--;
-            if (enemy.Killed) copyStrategy.IterateForCreation();
+            if (enemy.Killed) copyStrategy.IterateForCreation(enemy.Reward);
         }
         if (other.gameObject.transform.tag == "Wall")
         {
@@ -23,6 +23,11 @@ public partial class MonsterPart : MonoBehaviour
         {
             Bullet bullet = other.gameObject.GetComponent<Bullet>();
             bullet.DestroySelf();
+            DestroySelf();
+        }
+        
+        if (other.gameObject.transform.tag == "PlayerDestroyer")
+        {
             DestroySelf();
         }
     }

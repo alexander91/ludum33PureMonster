@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
     }
 
 
-    public void DestroySelf()
+    public virtual void DestroySelf()
     {
         alive = false;
         Destroy(gameObject);

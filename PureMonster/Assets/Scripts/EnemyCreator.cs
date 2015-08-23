@@ -9,6 +9,12 @@ public class EnemyCreator : MonoBehaviour {
     [SerializeField]
     GameObject shootingEnemy;
 
+    [SerializeField]
+    GameObject shootingEnemyExplosive;
+
+    [SerializeField]
+    GameObject tower;
+
     int count;
     
 	// Use this for initialization
@@ -38,7 +44,19 @@ public class EnemyCreator : MonoBehaviour {
         {
             count = 0;
 
-            if (UnityEngine.Random.value < (Time.timeSinceLevelLoad / 300f))
+            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 600f), 0.04f))
+            {
+                createEnemy(tower);
+                return;
+            }
+
+            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 600f), 0.05f))
+            {
+                createEnemy(shootingEnemyExplosive);
+                return;
+            }
+
+            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 600f), 0.4f))
             {
                 createEnemy(shootingEnemy);
                 return;

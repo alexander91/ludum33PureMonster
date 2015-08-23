@@ -7,7 +7,7 @@ public class ShootingEnemy : Enemy {
     GameObject bulletPrefab;
 
     [SerializeField]
-    const int timeToRecreate = 90;
+    int timeToRecreate = 90;
     int respown = 0;
 
 	// Use this for initialization

@@ -8,6 +8,19 @@ public class Enemy : MonoBehaviour {
 
     new Renderer renderer;
 
+    [SerializeField]
+    float speed = 0.01f;
+
+    [SerializeField]
+    int reward = 2;
+
+    public int Reward
+    {
+        get { return reward; }
+    }
+
+
+
     class WandererControl
     {
         public WandererControl()
@@ -15,17 +28,17 @@ public class Enemy : MonoBehaviour {
             SetNewTarget();
         }
 
-        public float speed = 0.01f;
+        
         public const float maxGoingTime = 3f;
 
         Vector3 nextPosition;
         Vector3 lastPos;
         float startGoingTime;
 
-        public void GoToPosition(Transform transform)
+        public void GoToPosition(Enemy enemy)
         {
-            lastPos = transform.position;
-            transform.position += speed * (nextPosition - lastPos).normalized;
+            lastPos = enemy.transform.position;
+            enemy.transform.position += enemy.speed * (nextPosition - lastPos).normalized;
         }
 
         public void Iterate()
@@ -92,14 +105,14 @@ public class Enemy : MonoBehaviour {
 	protected virtual void Update () {
         if (!active) return;
 
-        myWalker.GoToPosition(transform);
+        myWalker.GoToPosition(this);
         myWalker.Iterate();
 	
 	}
 
     public void DestroySelf()
     {
-        killed = true;
+        killed = true;        
         DestroyObject(gameObject);
     }
 

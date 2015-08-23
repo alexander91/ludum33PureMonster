@@ -4,8 +4,24 @@ using System.Collections.Generic;
 
 public partial class MonsterPart : MonoBehaviour
 {
+    
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.transform.tag == "Enemy")
+        {
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            if (enemy.Killed) return;
+            enemy.Health--;
+            if (enemy.Killed) copyStrategy.IterateForCreation();
+        }
+        if (other.gameObject.transform.tag == "Wall")
+        {
+            DestroySelf();
+        }
+    }
 
-    const float length = 2.5f;
+    const float length = 0.8f;
+    public const float AverageSpeed = 0.1f;
 
     public delegate void MonsterPartDestroyed(MonsterPart monsterPart);
     public event MonsterPartDestroyed onMonsterPartDestroyed;
@@ -18,51 +34,52 @@ public partial class MonsterPart : MonoBehaviour
     public void addNeighbor(MonsterPart neighbor)
     {
         neighbors.Add(neighbor);
-        neighbor.onMonsterPartDestroyed += (destroedPart) => { neighbors.Remove(destroedPart); };
+        neighbor.onMonsterPartDestroyed += (destroнedPart) => { neighbors.Remove(destroнedPart); };
 
-        neighbor.neighbors.Add(neighbor);
-        onMonsterPartDestroyed += (destroedPart) => { neighbor.neighbors.Remove(destroedPart); };
+        neighbor.neighbors.Add(this);
+        onMonsterPartDestroyed += (destroнedPart) => { neighbor.neighbors.Remove(destroнedPart); };
     }
 
-    Vector3 toAddPos;
-    public Vector3 TargetPosAdder
+    Vector3 accel;
+    public void AddAccel(Vector3 targetAccel)
     {
-        get { return toAddPos; }
-        set { toAddPos = value; }
+        accel += 0.01f * targetAccel;
     }
     Vector3 pos;
-    Vector3 oldPos;
+    Vector3 speed;
 
-    const float oldAffection = 0.6f;
-    const float maxDelta = 0.4f;
-
+    public Vector3 Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }
 
     public void Iterate()
     {
         var nowSavedPos = pos;
-        var targetPos = pos + toAddPos;
-        pos += pos - oldPos;
-        pos = oldAffection * pos + (1f - oldAffection) * targetPos;
-        oldPos = nowSavedPos;
+        //var targetPos = pos + 0.05f*toAddPos;
+        pos += speed;
+        speed += accel;
+        accel = Vector3.zero;
+        speed *= 0.9f;
 
-        if ((targetPos - pos).magnitude > maxDelta)
-        {
-            pos = targetPos + maxDelta * (pos - targetPos).normalized;
-        }
-
+        pos.z *= 0.6f;
         transform.position = pos;
     }
 
+    void Awake()
+    {
+        copyStrategy = new CopyingStrategy(this);
 
+    }
 
     // Use this for initialization
     void Start()
     {
-        this.oldPos = transform.position;
+        this.speed = Vector3.zero;
         this.pos = transform.position;
-        this.toAddPos = Vector3.zero;
+        this.accel = Vector3.zero;
 
-        copyStrategy = new CopyingStrategy(this);
 
         Game.Instance.Manager.AddPart(this);
 
@@ -75,7 +92,7 @@ public partial class MonsterPart : MonoBehaviour
         {
             Vector3 d = neigh.pos - pos;
             float lNow = d.magnitude;
-            toAddPos += 0.5f * (lNow - length) * d.normalized;
+            AddAccel( (lNow - length) * d.normalized * AverageSpeed / (AverageSpeed + speed.magnitude) );
         }
     }
 
@@ -88,7 +105,6 @@ public partial class MonsterPart : MonoBehaviour
     void Update()
     {
         Iterate();
-        copyStrategy.IterateForCreation();
     }
 
     void DestroySelf()

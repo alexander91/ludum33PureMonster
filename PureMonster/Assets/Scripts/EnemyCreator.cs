@@ -13,6 +13,13 @@ public class EnemyCreator : MonoBehaviour {
     GameObject shootingEnemyExplosive;
 
     [SerializeField]
+    GameObject shootingEnemyExplosiveFat;
+
+    [SerializeField]
+    GameObject shootingEnemyFast;
+
+
+    [SerializeField]
     GameObject tower;
 
     int count;
@@ -40,23 +47,35 @@ public class EnemyCreator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         count++;
-        if (count > 2 * 60)
+        if (count > 2 * 20)
         {
             count = 0;
 
-            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 600f), 0.04f))
+            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 200f), 0.04f))
             {
                 createEnemy(tower);
                 return;
             }
 
-            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 600f), 0.05f))
+            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 160f), 0.07f))
             {
                 createEnemy(shootingEnemyExplosive);
                 return;
             }
 
-            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 600f), 0.4f))
+            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad - 30f / 240f), 0.02f))
+            {
+                createEnemy(shootingEnemyExplosiveFat);
+                return;
+            }
+
+            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad - 20f / 150f), 0.05f))
+            {
+                createEnemy(shootingEnemyFast);
+                return;
+            }
+
+            if (UnityEngine.Random.value < Mathf.Min((Time.timeSinceLevelLoad / 160f), 0.24f))
             {
                 createEnemy(shootingEnemy);
                 return;

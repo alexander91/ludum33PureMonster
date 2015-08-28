@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        float speed = 0.5f;
+        float speed = 0.3f;
 
         if (Input.GetKey(KeyCode.UpArrow))
         {

@@ -124,6 +124,7 @@ public partial class MonsterPart : MonoBehaviour
         if (onMonsterPartDestroyed != null)
             onMonsterPartDestroyed(this);
         Game.Instance.Manager.RemovePart(this);
+        Game.Instance.Manager.AddRandomForces();
         DestroyObject(gameObject);
     }
 }

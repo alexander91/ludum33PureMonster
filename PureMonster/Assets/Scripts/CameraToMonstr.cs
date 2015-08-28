@@ -3,8 +3,12 @@ using System.Collections;
 
 public class CameraToMonstr : MonoBehaviour {
 
+    [SerializeField]
+    float attr = 0.07f;
+
     Vector3 startMonsterVec;
     Vector3 cameraStartVec;
+    Vector3 lastAdder;
 
 	// Use this for initialization
 	void Start () {
@@ -17,8 +21,11 @@ public class CameraToMonstr : MonoBehaviour {
 	void Update () {
 
         var adder = Game.Instance.Manager.CenterOfMonster - startMonsterVec;
+        var nowAdder = Vector3.Lerp(lastAdder, adder, attr);
 
-        transform.position = cameraStartVec + adder;
+        transform.position = cameraStartVec + nowAdder;
+
+        lastAdder = nowAdder;
 	
 	}
 }

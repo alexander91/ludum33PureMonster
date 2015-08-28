@@ -15,7 +15,7 @@ partial class MonsterPart
 
         void CreateNewPart()
         {
-            if (Game.Instance.Manager.NumberOfParts > 100) return;
+            if (Game.Instance.Manager.NumberOfParts > 500) return;
 
             if (monsterPart.neighbors.Count < MaxNeighborsForCreation)
             {
